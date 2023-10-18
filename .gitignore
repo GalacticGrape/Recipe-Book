@@ -1,3 +1,6 @@
+# Howdy! Welcome to the .gitignore list where rules are set to ignore files or directories on GitHub.
+# Feel free to add things as necessary
+
 # Ignore environment files
 *.env
 
