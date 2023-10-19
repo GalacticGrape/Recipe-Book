@@ -20,7 +20,7 @@ Collaborative Coding: Embracing the open-source community and welcoming contribu
 Getting Started
 To get started with MAGA's Recipe Book, follow these steps:
 
-Clone the Repository: git clone <repository-url>
+Clone the Repository: git clone <https://github.com/GalacticGrape/Recipe-Book.git>
 Navigate to the Project Directory: cd MAGA-Recipe-Book
 Run the Main Script: python main.py
 Explore and Enjoy: Start adding your favorite recipes and exploring the functionalities of the recipe book!
@@ -28,6 +28,6 @@ Contributing
 We welcome contributions from the community! If you have ideas for new features, bug fixes, or improvements, please create a pull request. Make sure to follow our contributing guidelines to maintain a healthy development environment.
 
 License
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+This project is licensed under the Apache 2.0 License - see the LICENSE.md file for details.
 
 Thank you for being a part of MAGA's Recipe Book! Let's cook up some delicious experiences together. 🍳🍲🍰
