@@ -1,7 +1,7 @@
 # Recipe-Book
 Maga's recipes
 MAGA's Recipe Book
-Welcome to MAGA's Recipe Book repository! This project is a Python-based recipe book management system that allows users to store, retrieve, and manage their favorite recipes.
+Welcome to Grandma K.'s Recipe Book repository! This project is a Python-based recipe book management system that allows users to store, retrieve, and manage their grandparent's or their favorite recipes.
 
 Project Overview
 MAGA's Recipe Book is a user-friendly application designed to help food enthusiasts organize their culinary creations. Whether you're a beginner cook or a seasoned chef, this recipe book allows you to:
