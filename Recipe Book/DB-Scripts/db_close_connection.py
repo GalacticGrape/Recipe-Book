@@ -9,7 +9,7 @@ def main():
     # Create a database connection
     connection = get_db_connection()
 
-    try:
+    try: print("try block here")
         # Perform database operations (e.g., querying, inserting, updating)
         # ...
 

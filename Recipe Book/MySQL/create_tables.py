@@ -1,6 +1,7 @@
 # This Python script establishes a connection to a MySQL database using the specified environment variables for host, user, password, and database name, sourced from a .env file to create two tables 
 
 # Import necessary modules and environment variables
+import mysql.connector
 import os
 from dotenv import load_dotenv
 

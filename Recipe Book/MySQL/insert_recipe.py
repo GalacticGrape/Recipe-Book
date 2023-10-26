@@ -34,22 +34,22 @@ try:
     INSERT INTO recipes (name, instructions, category_name)
     VALUES (%s, %s, %s)
     """
-    
+
     # Define the recipe details (name, instructions, and category_name)
     recipe_name = "Test Recipe"
-    recipe_instructions = "Test instructions for the recipe."
-    category_name = "Baked_Boods"  # Replace with an existing category name
-    
+    recipe_instructions = "Test instructions for baking the recipe."
+    category_name = "Baked_Goods"  # Corrected category name
+
     # Data for the recipe
     recipe_data = (recipe_name, recipe_instructions, category_name)
-    
+
     # Execute the insert query with the recipe data
     cursor.execute(insert_recipe_query, recipe_data)
-    
+
     # Commit the changes to the database
     connection.commit()
 
-# In case of any errors during the database operations, the script prints an error message. 
+# In case of any errors during the database operations, the script prints an error message.
 except mysql.connector.Error as error:
     print("Error:", error)
 

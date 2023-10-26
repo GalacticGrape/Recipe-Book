@@ -1,9 +1,7 @@
 # This script is for creating categories in the recipes_category table
 # Please note - the category names will be used in the recipe table
-# Capable of adding multiple categories 
-    # Example usage 
-    # categories_to_insert = ["Baked_Boods", "Canned_Goods", "Breakfast", "Lunch", "Dinner", "Jams_Jellys_Preserves", "Dried_goods", "Desserts", "Snacks", "EZ-PZ_Mealz"]
 
+# Import necessary modules and environment variables
 import mysql.connector
 import os
 from dotenv import load_dotenv
@@ -56,6 +54,10 @@ def insert_category(category_name):
 
 # Example usage - Inserting "Drinks" category into recipe_categories table
 categories_to_insert = ["Drinks"]
+
+# Capable of adding multiple categories 
+# Example usage 
+# categories_to_insert = ["Baked_Boods", "Canned_Goods", "Breakfast", "Lunch", "Dinner", "Jams_Jellys_Preserves", "Dried_goods", "Desserts", "Snacks", "EZ-PZ_Mealz"]
 
 for category in categories_to_insert:
     insert_category(category)
