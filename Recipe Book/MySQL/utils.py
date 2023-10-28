@@ -16,21 +16,30 @@ def import_dependencies():
     dotenv_path = r"S:\Python\.env"
     load_dotenv()
 
+    os_module = os
+    dotenv_module = load_dotenv
+    mysql_module = mysql.connector
+
     db_host = os.getenv("DB_HOST")
     db_user = os.getenv("DB_USER")
     db_password = os.getenv("DB_PASSWORD")
     db_name = os.getenv("DB_NAME")
 
-    return {
-        "os": os,
-        "dotenv": load_dotenv,
-        "mysql": mysql.connector,
+    modules = {
+        "os": os_module,
+        "dotenv": dotenv_module,
+        "mysql": mysql_module,
+    }
+
+    environment_vars = {
         "dotenv_path": dotenv_path,
         "db_host": db_host,
         "db_user": db_user,
         "db_password": db_password,
         "db_name": db_name
     }
+
+    return modules, environment_vars
 
 
 def get_categories(connection: MySQLConnection) -> List[str]:
@@ -56,14 +65,16 @@ def get_categories(connection: MySQLConnection) -> List[str]:
     return categories
 
 
-def insert_recipe(recipe_name, instructions, category_name):
-    global db_host, db_user, db_password, db_name  
+def insert_recipe(recipe_name, instructions, category_name, db_host, db_user, db_password, db_name):
+    # global db_host, db_user, db_password, db_name  
         # Declare variables as global
+        # commented out to troubleshoot
 
     """
     Insert a recipe into the database.
 
     Args:
+    mysql (module): The mysql module for database connection.
     recipe_name (str): The name of the recipe.
     instructions (str): Instructions for the recipe.
     category_name (str): The category of the recipe.
@@ -77,29 +88,29 @@ def insert_recipe(recipe_name, instructions, category_name):
 
     try:
             # Create a connection to the database
-        connection = mysql.connector.connect(
-                host=db_host,
-                user=db_user,
-                password=db_password,
-                database=db_name
-            )
-            # Create a cursor object using the connection
-        cursor = connection.cursor()
+        with mysql.connector.connect(
+            host=db_host,
+            user=db_user,
+            password=db_password,
+            database=db_name
+        ) as connection:
+            
+                # Create a cursor object using the connection
+            with connection.cursor() as cursor:
+                # Insert query
+                insert_recipe_query = """
+                    INSERT INTO recipes (name, instructions, category_name)
+                    VALUES (%s, %s, %s)
+                    """
 
-            # Insert query
-        insert_recipe_query = """
-            INSERT INTO recipes (name, instructions, category_name)
-            VALUES (%s, %s, %s)
-            """
+                    # Data for the recipe
+                recipe_data = (recipe_name, instructions, category_name)
 
-            # Data for the recipe
-        recipe_data = (recipe_name, instructions, category_name)
+                    # Execute the insert query with the recipe data
+                cursor.execute(insert_recipe_query, recipe_data)
 
-            # Execute the insert query with the recipe data
-        cursor.execute(insert_recipe_query, recipe_data)
-
-            # Commit the changes to the database
-        connection.commit()
+                    # Commit the changes to the database
+                connection.commit()
 
         return True
             # Inside the try block, a connection to the database is established using the retrieved environment variables (db_host, db_user, db_password, db_name)
