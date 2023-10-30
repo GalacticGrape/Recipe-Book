@@ -53,11 +53,12 @@ def insert_category(category_name):
             print("MySQL connection closed.")
 
 # Example usage - Inserting "Drinks" category into recipe_categories table
-categories_to_insert = ["Drinks"]
+# categories_to_insert = ["Drinks"]
 
 # Capable of adding multiple categories 
 # Example usage 
 # categories_to_insert = ["Baked_Boods", "Canned_Goods", "Breakfast", "Lunch", "Dinner", "Jams_Jellys_Preserves", "Dried_goods", "Desserts", "Snacks", "EZ-PZ_Mealz"]
+categories_to_insert = ["Appetizers_and_Beverages", "Breads", "Cakes_Frostings_and_Fillings", "Candy", "Canning_and_Freezing", "Casseroles_and_One_Dish_Meals”, "Eggs_and...", "Meats_Poultry_and_Fish", "Outdoor_Cooking", "Pastries_and_Pies”, “Soups_and_Sauces”, “Vegetables”]
 
 for category in categories_to_insert:
     insert_category(category)
