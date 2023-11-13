@@ -1,23 +1,28 @@
 # main.py
 
 from utils import import_dependencies, get_categories, insert_recipe
+import mysql.connector
 
-# Import necessary modules and retrieve environment variables
-dependencies = import_dependencies()
-os = dependencies["os"]
-load_dotenv = dependencies["dotenv"]
-mysql = dependencies["mysql"]
-dotenv_path = dependencies["dotenv_path"]
-db_host = dependencies["db_host"]
-db_user = dependencies["db_user"]
-db_password = dependencies["db_password"]
-db_name = dependencies["db_name"]
+# Import dependencies and retrieve values
+modules, db_vars = import_dependencies()
+
+# Access individual variables from db_vars
+db_host = db_vars["db_host"]
+db_user = db_vars["db_user"]
+db_password = db_vars["db_password"]
+db_name = db_vars["db_name"]
     # In this section, you are importing necessary modules and environment variables from the utils module using the import_dependencies function
     # The dependencies dictionary contains imported modules and environment variables
     # This approach makes it easier to manage imports and environment variables in your script
 
+# Access the mysql module from the modules dictionary
+mysql_module = modules["mysql"]
 
+# Access load_dotenv function from modules
+load_dotenv = modules["dotenv"]
 
+# Access dotenv_path variable from db_vars
+dotenv_path = db_vars["dotenv_path"]
 
 # Example usage
 if __name__ == "__main__":
@@ -46,7 +51,8 @@ if __name__ == "__main__":
     selected_category = categories[category_choice]
     
     # Insert the recipe into the database
-    if insert_recipe(recipe_name, instructions, selected_category):
-        print("Recipe successfully inserted into the database!")
-    else:
-        print("Failed to insert the recipe.")
+if insert_recipe(recipe_name, instructions, selected_category, connection):
+    print("Recipe inserted successfully!")
+else:
+    print("Failed to insert recipe.")
+
