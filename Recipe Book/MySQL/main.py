@@ -99,18 +99,40 @@ def query_by_category_flow():
     else:
         print(f"No recipes found in the category '{selected_category}'.")
 
+def display_recipe_list(recipes):
+    print("Available recipes:")
+    for index, recipe in enumerate(recipes, start=1):
+        print(f"{index}. {recipe['name']}")
+
 def query_by_recipe_name_flow():
+
     # Get user input for recipe name
-    recipe_name = input("Enter recipe name to search for: ")
+    recipe_name = input("Enter a partial or full recipe name to search for: ")
+    
+    # Get available categories
+    connection = mysql.connector.connect(
+    
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database=db_name
+    )
 
     # Query the database by recipe name
-    recipes = query_by_recipe_name(recipe_name)
-    
+    recipes = query_by_recipe_name(recipe_name, connection)
+
     # Display the results
     if recipes:
-        print(f"Recipes with the name '{recipe_name}':")
-        for recipe in recipes:
-            print(recipe)
+        display_recipe_list(recipes)
+        recipe_choice = int(input("Choose a recipe: ")) - 1
+
+        if 0 <= recipe_choice < len(recipes):
+            selected_recipe = recipes[recipe_choice]
+            print(f"Details for the selected recipe '{selected_recipe['name']}':")
+            print(f"Instructions: {selected_recipe['instructions']}")
+            print(f"Category: {selected_recipe['category_name']}")
+        else:
+            print("Invalid recipe choice.")
     else:
         print(f"No recipes found with the name '{recipe_name}'.")
 

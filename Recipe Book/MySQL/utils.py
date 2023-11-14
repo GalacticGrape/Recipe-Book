@@ -172,19 +172,19 @@ def query_by_recipe_name(recipe_name, connection):
     """
     recipes = []
     try:
-        with connection.cursor() as cursor:
-            # Execute SQL query to retrieve recipes with the specified name
-            cursor.execute("SELECT name FROM recipes WHERE name = %s", (recipe_name,))
-            recipes = [recipe[0] for recipe in cursor.fetchall()]
-
+        cursor = connection.cursor()
+        # Execute SQL query to retrieve recipes by name from the database
+        query = "SELECT * FROM recipes WHERE name LIKE %s"
+        cursor.execute(query, (f"%{recipe_name}%",))
+        recipes = [{"name": row[1], "instructions": row[2], "category_name": row[3]} for row in cursor.fetchall()]
     except mysql.connector.Error as error:
         print("Error:", error)
-
     finally:
-        # Close the connection in the 'finally' block to ensure it's always closed
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("MySQL connection closed.")
-
+        cursor.close()
     return recipes
+
+# This new function displays a list of recipes
+def display_recipe_list(recipes):
+    print("Available recipes:")
+    for index, recipe in enumerate(recipes, start=1):
+        print(f"{index}. {recipe['name']}")
