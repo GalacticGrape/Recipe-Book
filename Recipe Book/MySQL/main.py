@@ -21,6 +21,14 @@ load_dotenv = modules["dotenv"]
 # Access dotenv_path variable from db_vars
 dotenv_path = db_vars["dotenv_path"]
 
+# Get available categories
+connection = mysql.connector.connect(
+    host=db_host,
+    user=db_user,
+    password=db_password,
+    database=db_name
+)
+
 def main():
     # Load environment variables from .env file
     load_dotenv(dotenv_path)
@@ -43,15 +51,7 @@ def main():
 def insert_recipe_flow():
     # Get recipe details from user input
     recipe_name = input("Enter recipe name: ")
-    instructions = input("Enter recipe instructions: ")
-    
-    # Get available categories
-    connection = mysql.connector.connect(
-        host=db_host,
-        user=db_user,
-        password=db_password,
-        database=db_name
-    )
+    instructions = input("Enter recipe instructions: ")  
     categories = get_categories(connection)
     
     # Prompt user for category choice
@@ -71,12 +71,6 @@ def insert_recipe_flow():
 
 def query_by_category_flow():
     # Get available categories
-    connection = mysql.connector.connect(
-        host=db_host,
-        user=db_user,
-        password=db_password,
-        database=db_name
-    )
     categories = get_categories(connection)
     
     # Prompt user for category choice
@@ -109,15 +103,6 @@ def query_by_recipe_name_flow():
     # Get user input for recipe name
     recipe_name = input("Enter a partial or full recipe name to search for: ")
     
-    # Get available categories
-    connection = mysql.connector.connect(
-    
-        host=db_host,
-        user=db_user,
-        password=db_password,
-        database=db_name
-    )
-
     # Query the database by recipe name
     recipes = query_by_recipe_name(recipe_name, connection)
 
