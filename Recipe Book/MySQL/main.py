@@ -48,26 +48,6 @@ def main():
     else:
         print("Invalid choice. Please choose a valid option.")
 
-def insert_recipe_flow():
-    # Get recipe details from user input
-    recipe_name = input("Enter recipe name: ")
-    instructions = input("Enter recipe instructions: ")  
-    categories = get_categories(connection)
-    
-    # Prompt user for category choice
-    print("Available categories:")
-    for index, category in enumerate(categories, start=1):
-        print(f"{index}. {category}")
-
-    # Get user choice for category
-    category_choice = int(input("Choose a category: ")) - 1
-    selected_category = categories[category_choice]
-    
-    # Insert the recipe into the database
-    if insert_recipe(recipe_name, instructions, selected_category, connection):
-        print("Recipe inserted successfully!")
-    else:
-        print("Failed to insert recipe.")
 
 def query_by_category_flow():
     # Get available categories

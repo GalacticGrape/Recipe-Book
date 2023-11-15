@@ -41,7 +41,6 @@ def import_dependencies():
 
     return modules, environment_vars
 
-
 def get_categories(connection: MySQLConnection) -> List[str]:
     """
     Get available recipe categories from the database.
@@ -66,11 +65,7 @@ def get_categories(connection: MySQLConnection) -> List[str]:
 
 
 def insert_recipe(recipe_name, instructions, category_name, connection):
-    # global db_host, db_user, db_password, db_name  
-        # Declare variables as global
-        # commented out to troubleshoot
-
-    """
+     """
     Insert a recipe into the database.
 
     Args:
@@ -82,14 +77,13 @@ def insert_recipe(recipe_name, instructions, category_name, connection):
     Returns:
     bool: True if insertion is successful, False otherwise.
     """
-        # In this section, you define the insert_recipe function
-        # This function takes three arguments: recipe_name, instructions, and category_name
-        # Inside this function, you will write the code to insert these values into the database
+    # In this section, you define the insert_recipe function
+    # This function takes three arguments: recipe_name, instructions, and category_name
+    # Inside this function, you will write the code to insert these values into the database
 
     try:
-            # Create a connection to the database
-                
-                # Create a cursor object using the connection
+        # Create a connection to the database
+        # Create a cursor object using the connection
         with connection.cursor() as cursor:
             # Insert query
             insert_recipe_query = """
@@ -97,19 +91,19 @@ def insert_recipe(recipe_name, instructions, category_name, connection):
                 VALUES (%s, %s, %s)
                 """
 
-                # Data for the recipe
+            # Data for the recipe
             recipe_data = (recipe_name, instructions, category_name)
 
-                # Execute the insert query with the recipe data
+            # Execute the insert query with the recipe data
             cursor.execute(insert_recipe_query, recipe_data)
 
-                # Commit the changes to the database
+            # Commit the changes to the database
             connection.commit()
 
         return True
-            # Inside the try block, a connection to the database is established using the retrieved environment variables (db_host, db_user, db_password, db_name)
-            # The recipe details provided as arguments are inserted into the recipes table using an SQL INSERT INTO query
-            # The commit method is called to make the changes permanent in the database. If the insertion is successful, the function returns True
+        # Inside the try block, a connection to the database is established using the retrieved environment variables (db_host, db_user, db_password, db_name)
+        # The recipe details provided as arguments are inserted into the recipes table using an SQL INSERT INTO query
+        # The commit method is called to make the changes permanent in the database. If the insertion is successful, the function returns True
 
 
     except mysql.connector.Error as error:
@@ -127,6 +121,7 @@ def insert_recipe(recipe_name, instructions, category_name, connection):
             print("MySQL connection closed.")
         # The finally block ensures that the database connection is closed properly, regardless of whether the operations were successful or not
         # It checks if the connection is still open, and if so, it closes both the cursor and the connection
+
 
 def query_by_category(category_name, connection):
     """

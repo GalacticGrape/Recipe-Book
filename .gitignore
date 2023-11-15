@@ -26,3 +26,9 @@ GPT/
 
 # Ignore 'Data' directory
 Data/
+
+# Ignore 'interpreter.py'
+interpreter.py
+
+# Ignore 'script_graveyard'
+script_graveyard/
