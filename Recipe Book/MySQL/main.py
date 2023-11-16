@@ -1,6 +1,6 @@
 # main.py
 
-from utils import import_dependencies, get_categories, insert_recipe, query_by_category, query_by_recipe_name
+from utils import import_dependencies, get_categories, insert_recipe, query_by_category, query_by_recipe_name, insert_recipe_flow
 import mysql.connector
 
 # Import dependencies and retrieve values
@@ -38,10 +38,10 @@ def main():
 
     if choice == '1':
         # Insert a recipe into the database
-        insert_recipe_flow()
+        insert_recipe_flow(connection)
     elif choice == '2':
         # Query the database by category
-        query_by_category_flow()
+        query_by_category_flow(connection)
     elif choice == '3':
         # Query the database by recipe name
         query_by_recipe_name_flow()
@@ -49,7 +49,7 @@ def main():
         print("Invalid choice. Please choose a valid option.")
 
 
-def query_by_category_flow():
+def query_by_category_flow(connection):
     # Get available categories
     categories = get_categories(connection)
     

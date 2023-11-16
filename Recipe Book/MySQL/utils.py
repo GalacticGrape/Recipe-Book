@@ -65,7 +65,11 @@ def get_categories(connection: MySQLConnection) -> List[str]:
 
 
 def insert_recipe(recipe_name, instructions, category_name, connection):
-     """
+    # global db_host, db_user, db_password, db_name  
+        # Declare variables as global
+        # commented out to troubleshoot
+
+    """
     Insert a recipe into the database.
 
     Args:
@@ -81,7 +85,7 @@ def insert_recipe(recipe_name, instructions, category_name, connection):
     # This function takes three arguments: recipe_name, instructions, and category_name
     # Inside this function, you will write the code to insert these values into the database
 
-    try:
+    try:               
         # Create a connection to the database
         # Create a cursor object using the connection
         with connection.cursor() as cursor:
@@ -122,6 +126,26 @@ def insert_recipe(recipe_name, instructions, category_name, connection):
         # The finally block ensures that the database connection is closed properly, regardless of whether the operations were successful or not
         # It checks if the connection is still open, and if so, it closes both the cursor and the connection
 
+def insert_recipe_flow(connection):
+    # Get recipe details from user input
+    recipe_name = input("Enter recipe name: ")
+    instructions = input("Enter recipe instructions: ")  
+    categories = get_categories(connection)
+    
+    # Prompt user for category choice
+    print("Available categories:")
+    for index, category in enumerate(categories, start=1):
+        print(f"{index}. {category}")
+
+    # Get user choice for category
+    category_choice = int(input("Choose a category: ")) - 1
+    selected_category = categories[category_choice]
+    
+    # Insert the recipe into the database
+    if insert_recipe(recipe_name, instructions, selected_category, connection):
+        print("Recipe inserted successfully!")
+    else:
+        print("Failed to insert recipe.")
 
 def query_by_category(category_name, connection):
     """
