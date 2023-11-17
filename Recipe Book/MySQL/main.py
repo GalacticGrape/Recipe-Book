@@ -1,6 +1,6 @@
 # main.py
 
-from utils import import_dependencies, get_categories, insert_recipe, query_by_category, query_by_recipe_name, insert_recipe_flow
+from utils import import_dependencies, get_categories, insert_recipe, query_by_category, query_by_recipe_name, insert_recipe_flow, query_by_category_flow, display_recipe_list
 import mysql.connector
 
 # Import dependencies and retrieve values
@@ -44,62 +44,9 @@ def main():
         query_by_category_flow(connection)
     elif choice == '3':
         # Query the database by recipe name
-        query_by_recipe_name_flow()
+        query_by_recipe_name_flow(connection)
     else:
         print("Invalid choice. Please choose a valid option.")
-
-
-def query_by_category_flow(connection):
-    # Get available categories
-    categories = get_categories(connection)
-    
-    # Prompt user for category choice
-    print("Available categories:")
-    for index, category in enumerate(categories, start=1):
-        print(f"{index}. {category}")
-
-    # Get user choice for category
-    category_choice = int(input("Choose a category: ")) - 1
-    selected_category = categories[category_choice]
-
-    # Query the database by category
-    recipes = query_by_category(selected_category, connection)
-    
-    # Display the results
-    if recipes:
-        print(f"Recipes in the category '{selected_category}':")
-        for recipe in recipes:
-            print(recipe)
-    else:
-        print(f"No recipes found in the category '{selected_category}'.")
-
-def display_recipe_list(recipes):
-    print("Available recipes:")
-    for index, recipe in enumerate(recipes, start=1):
-        print(f"{index}. {recipe['name']}")
-
-def query_by_recipe_name_flow():
-
-    # Get user input for recipe name
-    recipe_name = input("Enter a partial or full recipe name to search for: ")
-    
-    # Query the database by recipe name
-    recipes = query_by_recipe_name(recipe_name, connection)
-
-    # Display the results
-    if recipes:
-        display_recipe_list(recipes)
-        recipe_choice = int(input("Choose a recipe: ")) - 1
-
-        if 0 <= recipe_choice < len(recipes):
-            selected_recipe = recipes[recipe_choice]
-            print(f"Details for the selected recipe '{selected_recipe['name']}':")
-            print(f"Instructions: {selected_recipe['instructions']}")
-            print(f"Category: {selected_recipe['category_name']}")
-        else:
-            print("Invalid recipe choice.")
-    else:
-        print(f"No recipes found with the name '{recipe_name}'.")
 
 if __name__ == "__main__":
     main()
