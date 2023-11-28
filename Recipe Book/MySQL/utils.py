@@ -190,7 +190,7 @@ def query_by_category(category_name, connection):
 
     return recipes
 
-def query_by_category_flow(connection_obj):
+def query_by_category_flow(connection_obj, categories):
     # Get available categories
     categories = get_categories(connection_obj)
     
