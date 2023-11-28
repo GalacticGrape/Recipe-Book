@@ -1,6 +1,6 @@
 # main.py
 
-from utils import import_dependencies, get_categories, insert_recipe, query_by_category, query_by_recipe_name, insert_recipe_flow, query_by_category_flow, display_recipe_list
+from utils import import_dependencies, connection, insert_recipe_flow, query_by_category_flow, query_by_recipe_name_flow
 import mysql.connector
 
 # Import dependencies and retrieve values
@@ -21,13 +21,8 @@ load_dotenv = modules["dotenv"]
 # Access dotenv_path variable from db_vars
 dotenv_path = db_vars["dotenv_path"]
 
-# Get available categories
-connection = mysql.connector.connect(
-    host=db_host,
-    user=db_user,
-    password=db_password,
-    database=db_name
-)
+# Create a new connection
+connection_obj = connection(db_host, db_user, db_password, db_name)
 
 def main():
     # Load environment variables from .env file
@@ -38,15 +33,18 @@ def main():
 
     if choice == '1':
         # Insert a recipe into the database
-        insert_recipe_flow(connection)
+        insert_recipe_flow(connection_obj)
     elif choice == '2':
         # Query the database by category
-        query_by_category_flow(connection)
+        query_by_category_flow(connection_obj)
     elif choice == '3':
         # Query the database by recipe name
-        query_by_recipe_name_flow(connection)
+        query_by_recipe_name_flow(connection_obj)
     else:
         print("Invalid choice. Please choose a valid option.")
+
+    # close connection when done
+    connection_obj.close()
 
 if __name__ == "__main__":
     main()

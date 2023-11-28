@@ -22,7 +22,7 @@ logs/
 .idea/
 
 # Ignore 'GPT' directory
-GPT/
+# GPT/
 
 # Ignore 'Data' directory
 Data/
@@ -31,4 +31,4 @@ Data/
 interpreter.py
 
 # Ignore 'script_graveyard'
-script_graveyard/
+# script_graveyard/

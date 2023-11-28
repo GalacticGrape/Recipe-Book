@@ -41,6 +41,15 @@ def import_dependencies():
 
     return modules, environment_vars
 
+# define a function named connection which connects to mysql with host, user, password, and database variables
+def connection(db_host, db_user, db_password, db_name):
+    return mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database=db_name
+    )
+
 def get_categories(connection: MySQLConnection) -> List[str]:
     """
     Get available recipe categories from the database.
@@ -64,73 +73,11 @@ def get_categories(connection: MySQLConnection) -> List[str]:
     return categories
 
 
-def insert_recipe(recipe_name, instructions, category_name, connection):
-    # global db_host, db_user, db_password, db_name  
-        # Declare variables as global
-        # commented out to troubleshoot
-
-    """
-    Insert a recipe into the database.
-
-    Args:
-    mysql (module): The mysql module for database connection.
-    recipe_name (str): The name of the recipe.
-    instructions (str): Instructions for the recipe.
-    category_name (str): The category of the recipe.
-
-    Returns:
-    bool: True if insertion is successful, False otherwise.
-    """
-    # In this section, you define the insert_recipe function
-    # This function takes three arguments: recipe_name, instructions, and category_name
-    # Inside this function, you will write the code to insert these values into the database
-
-    try:               
-        # Create a connection to the database
-        # Create a cursor object using the connection
-        with connection.cursor() as cursor:
-            # Insert query
-            insert_recipe_query = """
-                INSERT INTO recipes (name, instructions, category_name)
-                VALUES (%s, %s, %s)
-                """
-
-            # Data for the recipe
-            recipe_data = (recipe_name, instructions, category_name)
-
-            # Execute the insert query with the recipe data
-            cursor.execute(insert_recipe_query, recipe_data)
-
-            # Commit the changes to the database
-            connection.commit()
-
-        return True
-        # Inside the try block, a connection to the database is established using the retrieved environment variables (db_host, db_user, db_password, db_name)
-        # The recipe details provided as arguments are inserted into the recipes table using an SQL INSERT INTO query
-        # The commit method is called to make the changes permanent in the database. If the insertion is successful, the function returns True
-
-
-    except mysql.connector.Error as error:
-        print("Error:", error)
-        return False
-        # In case there is an error during the database operations, the code inside the except block will execute
-        # It prints the error message and returns False to indicate that the insertion failed
-
-
-    finally:
-        # Close the connection in the 'finally' block to ensure it's always closed
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("MySQL connection closed.")
-        # The finally block ensures that the database connection is closed properly, regardless of whether the operations were successful or not
-        # It checks if the connection is still open, and if so, it closes both the cursor and the connection
-
-def insert_recipe_flow(connection):
+def insert_recipe_flow(connection_obj):
     # Get recipe details from user input
     recipe_name = input("Enter recipe name: ")
     instructions = input("Enter recipe instructions: ")  
-    categories = get_categories(connection)
+    categories = get_categories()
     
     # Prompt user for category choice
     print("Available categories:")
@@ -176,9 +123,10 @@ def query_by_category(category_name, connection):
             print("MySQL connection closed.")
 
     return recipes
-def query_by_category_flow(connection):
+
+def query_by_category_flow(connection_obj):
     # Get available categories
-    categories = get_categories(connection)
+    categories = get_categories(connection_obj)
     
     # Prompt user for category choice
     print("Available categories:")
@@ -190,7 +138,7 @@ def query_by_category_flow(connection):
     selected_category = categories[category_choice]
 
     # Query the database by category
-    recipes = query_by_category(selected_category, connection)
+    recipes = query_by_category(selected_category, connection_obj)
     
     # Display the results
     if recipes:
@@ -199,6 +147,12 @@ def query_by_category_flow(connection):
             print(recipe)
     else:
         print(f"No recipes found in the category '{selected_category}'.")
+
+# This new function displays a list of recipes
+def display_recipe_list(recipes):
+    print("Available recipes:")
+    for index, recipe in enumerate(recipes, start=1):
+        print(f"{index}. {recipe['name']}")
 
 def query_by_recipe_name(recipe_name, connection):
     """
@@ -224,19 +178,13 @@ def query_by_recipe_name(recipe_name, connection):
         cursor.close()
     return recipes
 
-# This new function displays a list of recipes
-def display_recipe_list(recipes):
-    print("Available recipes:")
-    for index, recipe in enumerate(recipes, start=1):
-        print(f"{index}. {recipe['name']}")
-
-def query_by_recipe_name_flow(connection):
+def query_by_recipe_name_flow(connection_obj):
 
     # Get user input for recipe name
     recipe_name = input("Enter a partial or full recipe name to search for: ")
     
     # Query the database by recipe name
-    recipes = query_by_recipe_name(recipe_name, connection)
+    recipes = query_by_recipe_name(recipe_name, connection_obj)
 
     # Display the results
     if recipes:
@@ -252,3 +200,5 @@ def query_by_recipe_name_flow(connection):
             print("Invalid recipe choice.")
     else:
         print(f"No recipes found with the name '{recipe_name}'.")
+
+

@@ -1,0 +1,61 @@
+# Import necessary modules and environment variables
+import mysql.connector
+import os
+from dotenv import load_dotenv
+
+# Specify the path to the .env file
+dotenv_path = r"S:\Python\.env"
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Retrieve environment variables
+db_host = os.getenv("DB_HOST")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
+db_name = os.getenv("DB_NAME")
+
+# Within a try block, the script initiates a connection to the MySQL server
+try:
+    # Create a connection to the database
+    connection = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database=db_name
+    )
+
+    # Create a cursor object using the connection
+    cursor = connection.cursor()
+
+    # Query to select the test recipe from the recipes table
+    select_recipe_query = """
+    SELECT * FROM recipes WHERE name = 'Test Recipe';
+    """
+    
+    # Execute the query
+    cursor.execute(select_recipe_query)
+
+    # Fetch all rows from the query result
+    recipes = cursor.fetchall()
+
+    # Print the retrieved recipes
+    print("Test Recipe:")
+    for recipe in recipes:
+        print(f"ID: {recipe[0]}")
+        print(f"Name: {recipe[1]}")
+        print(f"Instructions: {recipe[2]}")
+        print(f"Category: {recipe[3]}")
+        print("------------")
+
+# In case of any errors during the database operations, the script prints an error message 
+except mysql.connector.Error as error:
+    print("Error:", error)
+
+# The finally block ensures the connection is closed properly, regardless of whether the operations were successful or not
+finally:
+    # Close the connection in the 'finally' block to ensure it's always closed
+    if connection.is_connected():
+        cursor.close()
+        connection.close()
+        print("MySQL connection closed.")
