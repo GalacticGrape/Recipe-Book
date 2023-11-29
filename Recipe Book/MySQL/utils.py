@@ -209,8 +209,18 @@ def query_by_category_flow(connection_obj, categories):
     # Display the results
     if recipes:
         print(f"Recipes in the category '{selected_category}':")
-        for recipe in recipes:
-            print(recipe)
+        for index, recipe in enumerate(recipes, start=1):
+            print(f"{index}. {recipe}")
+
+        # get user choice for recipe within the category
+        recipe_choice = int(input("Choose a recipe: ")) - 1
+
+        if 0 <= recipe_choice < len(recipes):
+            selected_recipe = recipes[recipe_choice]
+            print(f"details for the selected recipe")
+            # Add more details if needed
+        else:
+            print("Invalid recipe choice.")
     else:
         print(f"No recipes found in the category '{selected_category}'.")
 
