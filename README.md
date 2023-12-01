@@ -2,7 +2,7 @@
 Maga's Recipe Book
 
 Who's Maga?
-Back in the late 2000s, my cousin Nicolas, while learning to talk, nicknamed our Grandma Kathy, Maga! We've been calling her that since! Maga was born in Canada and emigrated to the US with the love her life Hans. They had two kids Kevin and Tara. Maga enjoys golf, traveling, and spending time with her family. Oh yeah, I forgot to mention, Maga really loves cooking and baking food! 
+Back in the late 2000s, my cousin Nicolas, while learning to talk, nicknamed our Grandma Kathy, Maga! We've been calling her that since! Maga was born in Canada and emigrated to the US with the love her life Hans. They had two lovely children, Kevin and Tara. Maga enjoys golf, traveling, and spending time with her family. Oh yeah, I forgot to mention, Maga really loves cooking and baking food! 
 
 Welcome to Maga's (Grandma Kathy's) Recipe Book repository!
 
@@ -15,6 +15,8 @@ Add New Recipes: Easily add new recipes to the collection, including ingredients
 Organize by Categories: Categorize your recipes into different sections like Baked Goods, Meals, Drinks, and more.
 Search and Retrieve: Effortlessly search for recipes based on ingredients, names, or categories.
 Contribute: Contribute your own recipes and share your culinary expertise with others.
+
+
 How We Got Here
 This project was developed as part of the learning journey to become proficient in Python programming and database management. We explored various concepts, including:
 
@@ -22,11 +24,13 @@ Python Basics: Understanding data types, loops, conditional statements, and func
 Database Management: Utilizing SQLite for local database storage, including creating tables and performing CRUD operations.
 Version Control: Learning Git and GitHub for collaboration and version control.
 Collaborative Coding: Embracing the open-source community and welcoming contributions from fellow developers.
+
+
 Getting Started
 To get started with MAGA's Recipe Book, follow these steps:
 
 Clone the Repository: git clone <https://github.com/GalacticGrape/Recipe-Book.git>
-Navigate to the Project Directory: cd MAGA-Recipe-Book
+Navigate to the Project Directory: cd "/Recipe Book/MySQL"
 Run the Main Script: python main.py
 Explore and Enjoy: Start adding your favorite recipes and exploring the functionalities of the recipe book!
 Contributing

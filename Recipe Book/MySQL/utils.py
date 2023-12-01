@@ -214,16 +214,50 @@ def query_by_category_flow(connection_obj, categories):
 
         # get user choice for recipe within the category
         recipe_choice = int(input("Choose a recipe: ")) - 1
-
         if 0 <= recipe_choice < len(recipes):
             selected_recipe = recipes[recipe_choice]
-            print(f"details for the selected recipe")
-            # Add more details if needed
+            # Debugging block
+            print("Debug - selected_recipe:", selected_recipe)
+
+            # Query the database to get detailed information about the selected recipe
+            detailed_recipe = get_recipe_details(selected_recipe, connection_obj)
+
+             # Display the results
+            if detailed_recipe and 'name' in detailed_recipe:
+                print(f"Details for the selected recipe '{detailed_recipe['name']}':")
+                print(f"Ingredients: {detailed_recipe.get('ingredients', 'N/A')}")
+                print(f"Instructions: {detailed_recipe.get('instructions', 'N/A')}")
+                print(f"Category: {detailed_recipe.get('category_name', 'N/A')}")
+                # Add more details if needed
+            else:
+                print("Details for the selected recipe not available.")
         else:
             print("Invalid recipe choice.")
     else:
         print(f"No recipes found in the category '{selected_category}'.")
 
+def get_recipe_details(recipe_name, connection):
+    detailed_recipe = {}  # Initialize with an empty dictionary
+
+    try:
+        with connection.cursor() as cursor:
+            # Execute SQL query to retrieve detailed information about the recipe
+            cursor.execute("SELECT * FROM recipes WHERE name = %s", (recipe_name,))
+            result = cursor.fetchone()
+
+            # Check if a result is obtained before accessing values
+            if result:
+                detailed_recipe = {
+                    'name': result[1],
+                    'ingredients': result[2],
+                    'instructions': result[3],
+                    'category_name': result[4],
+                }
+
+    except mysql.connector.Error as error:
+        print("Error:", error)
+
+    return detailed_recipe
 # This new function displays a list of recipes
 def display_recipe_list(recipes):
     print("Available recipes:")
