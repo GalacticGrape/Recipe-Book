@@ -1,7 +1,12 @@
 # Recipe-Book
-Maga's recipes
-MAGA's Recipe Book
-Welcome to Grandma K.'s Recipe Book repository! This project is a Python-based recipe book management system that allows users to store, retrieve, and manage their grandparent's or their favorite recipes.
+Maga's Recipe Book
+
+Who's Maga?
+Back in the late 2000s, my cousin Nicolas, while learning to talk, nicknamed our Grandma Kathy, Maga! We've been calling her that since! Maga was born in Canada and emigrated to the US with the love her life Hans. They had two kids Kevin and Tara. Maga enjoys golf, traveling, and spending time with her family. Oh yeah, I forgot to mention, Maga really loves cooking and baking food! 
+
+Welcome to Maga's (Grandma Kathy's) Recipe Book repository!
+
+This project is a Python-based recipe book management system that allows users to store, retrieve, and manage their grandparent's or their favorite recipes.
 
 Project Overview
 MAGA's Recipe Book is a user-friendly application designed to help food enthusiasts organize their culinary creations. Whether you're a beginner cook or a seasoned chef, this recipe book allows you to:
