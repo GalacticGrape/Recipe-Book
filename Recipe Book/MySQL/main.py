@@ -23,7 +23,7 @@ dotenv_path = db_vars["dotenv_path"]
 
 # Create a new connection
 connection_obj = connection(db_host, db_user, db_password, db_name)
-
+new_connection_obj = connection(db_host, db_user, db_password, db_name)
 # Get categories
 categories = get_categories(connection_obj)
 
@@ -39,7 +39,7 @@ def main():
         insert_recipe_flow(connection_obj)
     elif choice == '2':
         # Query the database by category
-        query_by_category_flow(connection_obj, categories)
+        query_by_category_flow(connection_obj, new_connection_obj, categories)
     elif choice == '3':
         # Query the database by recipe name
         query_by_recipe_name_flow(connection_obj)
@@ -48,6 +48,6 @@ def main():
 
     # close connection when done
     connection_obj.close()
-
+    new_connection_obj.close()
 if __name__ == "__main__":
     main()

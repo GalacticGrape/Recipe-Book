@@ -42,13 +42,33 @@ def import_dependencies():
     return modules, environment_vars
 
 # define a function named connection which connects to mysql with host, user, password, and database variables
-def connection(db_host, db_user, db_password, db_name):
-    return mysql.connector.connect(
-        host=db_host,
-        user=db_user,
-        password=db_password,
-        database=db_name
-    )
+def connection(host, user, password, database):
+    """
+    Establish a connection to the MySQL database.
+
+    Args:
+    host (str): The host address of the MySQL server.
+    user (str): The username for connecting to the MySQL server.
+    password (str): The password for connecting to the MySQL server.
+    database (str): The name of the MySQL database.
+
+    Returns:
+    mysql.connector.connection.MySQLConnection: Database connection object.
+    """
+    try:
+        connection_obj = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+        print("MySQL connection opened.")
+        return connection_obj
+
+    except mysql.connector.Error as error:
+        print("Error:", error)
+        return None
+
 
 def get_categories(connection: MySQLConnection) -> List[str]:
     """
@@ -190,7 +210,7 @@ def query_by_category(category_name, connection):
 
     return recipes
 
-def query_by_category_flow(connection_obj, categories):
+def query_by_category_flow(connection_obj, new_connection_obj, categories):
     # Get available categories
     categories = get_categories(connection_obj)
     
@@ -220,8 +240,8 @@ def query_by_category_flow(connection_obj, categories):
             print("Debug - selected_recipe:", selected_recipe)
 
             # Query the database to get detailed information about the selected recipe
-            detailed_recipe = get_recipe_details(selected_recipe, connection_obj)
-
+            detailed_recipe = get_recipe_details(selected_recipe, connection_obj, new_connection_obj)
+            
              # Display the results
             if detailed_recipe and 'name' in detailed_recipe:
                 print(f"Details for the selected recipe '{detailed_recipe['name']}':")
@@ -236,28 +256,54 @@ def query_by_category_flow(connection_obj, categories):
     else:
         print(f"No recipes found in the category '{selected_category}'.")
 
-def get_recipe_details(recipe_name, connection):
-    detailed_recipe = {}  # Initialize with an empty dictionary
 
+def get_recipe_details(recipe_name, connection, new_connection_obj):
+    """
+    Get detailed information about a recipe.
+
+    Args:
+    recipe_name (str): The name of the recipe to query.
+    connection (mysql.connector.connection.MySQLConnection): Database connection object.
+
+    Returns:
+    dict: Detailed information about the recipe.
+    """
+    detailed_recipe = {}
     try:
-        with connection.cursor() as cursor:
+        # Establish a new connection
+        new_connection = mysql.connector.connect(**new_connection_obj)
+        with new_connection.cursor() as cursor:
             # Execute SQL query to retrieve detailed information about the recipe
-            cursor.execute("SELECT * FROM recipes WHERE name = %s", (recipe_name,))
+            cursor.execute("""
+                SELECT name, ingredients, instructions, category_name
+                FROM recipes
+                WHERE name = %s
+            """, (recipe_name,))
             result = cursor.fetchone()
 
-            # Check if a result is obtained before accessing values
             if result:
                 detailed_recipe = {
-                    'name': result[1],
-                    'ingredients': result[2],
-                    'instructions': result[3],
-                    'category_name': result[4],
+                    'name': result[0],
+                    'ingredients': result[1],
+                    'instructions': result[2],
+                    'category_name': result[3],
                 }
 
     except mysql.connector.Error as error:
         print("Error:", error)
+    
+    finally:
+        # Make sure to close the connection in all cases
+        if 'new_connection' in locals() and new_connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection closed.")
 
+    # Add print statements to help with troubleshooting
+    print("Recipe details inside the function:", detailed_recipe)
+    
     return detailed_recipe
+
 # This new function displays a list of recipes
 def display_recipe_list(recipes):
     print("Available recipes:")
